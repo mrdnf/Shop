@@ -829,4 +829,6 @@ return [
     'status.trial' => 'تجريبي',
     'to use saved addresses and track orders.' => 'لاستخدام العناوين المحفوظة وتتبع الطلبات.',
     'year' => 'سنة',
+    '(none)' => '(بدون)',
+    'Each shop database is named prefix + shop address. Leave empty to name it exactly like the shop.' => 'اسم قاعدة بيانات كل متجر = البادئة + عنوان المتجر. اتركها فارغة ليكون الاسم مطابقًا لاسم المتجر.',
 ];

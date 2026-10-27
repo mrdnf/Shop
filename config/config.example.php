@@ -13,10 +13,10 @@ return [
     'db' => [
         'host' => '127.0.0.1',
         'port' => 3306,
-        'user' => 'root',                      // needs CREATE DATABASE (and CREATE USER if per_tenant_user)
+        'user' => 'dnf-shops',                 // one user creates the master DB and every shop DB
         'pass' => '',
-        'platform_db' => 'matjar_platform',
-        'tenant_prefix' => 'matjar_shop_',
+        'platform_db' => 'master',
+        'tenant_prefix' => '',                  // '' = each shop DB is named exactly like the shop
         'per_tenant_user' => false,            // create a dedicated MySQL user per shop
         'tenant_user_host' => '%',
     ],

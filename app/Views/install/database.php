@@ -13,11 +13,11 @@
     <label class="field"><span class="label-text"><?= e(__('Password')) ?></span>
         <input name="pass" type="password" class="input w-full" autocomplete="new-password"></label>
     <label class="field"><span class="label-text"><?= e(__('Platform database name')) ?></span>
-        <input name="platform_db" class="input w-full font-mono" value="<?= $v('platform_db', 'matjar_platform') ?>" required>
+        <input name="platform_db" class="input w-full font-mono" value="<?= $v('platform_db', 'master') ?>" required>
         <span class="text-xs opacity-60"><?= e(__('Central database: shops, plans, platform admins.')) ?></span></label>
     <label class="field"><span class="label-text"><?= e(__('Shop database prefix')) ?></span>
-        <input name="tenant_prefix" class="input w-full font-mono" value="<?= $v('tenant_prefix', 'matjar_shop_') ?>" required>
-        <span class="text-xs opacity-60"><?= e(__('Each shop database is named prefix + shop address.')) ?></span></label>
+        <input name="tenant_prefix" class="input w-full font-mono" value="<?= $v('tenant_prefix', '') ?>" placeholder="<?= e(__('(none)')) ?>">
+        <span class="text-xs opacity-60"><?= e(__('Each shop database is named prefix + shop address. Leave empty to name it exactly like the shop.')) ?></span></label>
     <label class="md:col-span-2 flex items-start gap-3 rounded-box border border-base-content/10 p-4 cursor-pointer">
         <input type="checkbox" name="per_tenant_user" value="1" class="toggle toggle-primary mt-0.5" <?= old('per_tenant_user', !empty($db['per_tenant_user']) ? '1' : '') ? 'checked' : '' ?>>
         <span>

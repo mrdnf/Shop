@@ -13,6 +13,12 @@ Compiled assets are committed, so the server needs no Node.js.
 
 ## Installation
 
+**Production server (Ubuntu/Debian + nginx):** see [`deploy/DEPLOY.md`](deploy/DEPLOY.md). One command
+(`deploy/deploy.sh`) installs everything, including SSL and the cron job.
+Unattended install without the web wizard: `php bin/install.php --help` (see the file header).
+
+**Manual / any host:**
+
 1. Point your web server's document root to `public/` (Apache `.htaccess` included,
    nginx sample in `docker/nginx.conf.example`). Make `config/`, `storage/` and
    `public/uploads/` writable.
@@ -36,8 +42,8 @@ Local dev: `php -S 127.0.0.1:8000 -t public public/index.php`
 ## Architecture
 
 ```
-platform DB (matjar_platform)      tenants, plans, platform admins, platform branding
-shop DB per shop (matjar_shop_x)   users, products, orders, shipments, settings, API keys…
+master DB (default name: master)     tenants, plans, platform admins, platform branding
+one DB per shop (named after it)     users, products, orders, shipments, settings, API keys…
 ```
 
 - **Single mode**: one tenant row (`main`) with its own DB serves every URL.

@@ -19,6 +19,15 @@ final class TenantProvisioner
 {
     public const RESERVED = ['www', 'admin', 'api', 'platform', 'install', 'assets', 'uploads', 'app', 'mail', 's'];
 
+    /** Database names a shop may never take (MySQL system schemas + the master DB). */
+    public const RESERVED_DATABASES = ['mysql', 'information_schema', 'performance_schema', 'sys', 'master', 'test'];
+
+    /** Shop database name: optional prefix + the shop address, e.g. "eagle-electronics". */
+    public static function databaseName(string $slug): string
+    {
+        return substr((string) Config::get('db.tenant_prefix', '') . $slug, 0, 64);
+    }
+
     /**
      * @param array{slug: string, name: string, name_ar?: string, owner_name: string, owner_email: string, owner_password: string,
      *              plan_id?: ?int, domain?: ?string, status?: string, locale?: string, currency?: string, currency_symbol?: string,
@@ -38,10 +47,14 @@ final class TenantProvisioner
             throw new \InvalidArgumentException(__('This domain is already used by another shop.'));
         }
 
-        $dbName = substr((string) Config::get('db.tenant_prefix', 'matjar_shop_') . str_replace('-', '_', $slug), 0, 64);
+        $dbName = self::databaseName($slug);
+        if (in_array(strtolower($dbName), self::RESERVED_DATABASES, true) || $dbName === (string) Config::get('db.platform_db')) {
+            throw new \InvalidArgumentException(__('Shop address is invalid or reserved.'));
+        }
         $server = DB::server();
         if ($server->value('SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?', [$dbName])) {
-            throw new \RuntimeException("Database {$dbName} already exists.");
+            // Never touch a database that is not ours (other sites may share this MySQL server).
+            throw new \InvalidArgumentException(__('This shop address is already taken.'));
         }
 
         $server->exec('CREATE DATABASE ' . Database::ident($dbName) . ' CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');

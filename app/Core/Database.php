@@ -31,7 +31,7 @@ final class Database
 
     public static function ident(string $name): string
     {
-        if (!preg_match('/^[A-Za-z0-9_]+$/', $name)) {
+        if (!preg_match('/^[A-Za-z0-9_-]{1,64}$/', $name)) {
             throw new \InvalidArgumentException("Invalid identifier: {$name}");
         }
         return "`{$name}`";
