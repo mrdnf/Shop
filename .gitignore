@@ -1,0 +1,13 @@
+/node_modules/
+/config/config.php
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/cron.lock
+/public/uploads/*
+!/public/uploads/.htaccess
+!/public/uploads/.gitkeep
+.DS_Store
+.idea/
+.vscode/

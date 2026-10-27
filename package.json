@@ -1,0 +1,20 @@
+{
+  "name": "matjar-saas",
+  "private": true,
+  "description": "Front-end build for Matjar (Tailwind CSS 4 + daisyUI 5). Output is committed, so servers do not need Node.",
+  "scripts": {
+    "build:css": "tailwindcss -i resources/css/app.css -o public/assets/css/app.css --minify",
+    "watch:css": "tailwindcss -i resources/css/app.css -o public/assets/css/app.css --watch",
+    "vendor": "node resources/copy-vendor.mjs",
+    "build": "npm run vendor && npm run build:css"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.1.13",
+    "tailwindcss": "4.1.13",
+    "daisyui": "5.1.10",
+    "alpinejs": "3.14.9",
+    "lucide": "0.544.0",
+    "chart.js": "4.5.0",
+    "leaflet": "1.9.4"
+  }
+}

@@ -1,0 +1,14 @@
+Options -Indexes
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L,QSA]
+</IfModule>
+
+# Never execute scripts from the uploads folder
+<IfModule mod_php.c>
+    <FilesMatch "^uploads/.*\.ph(p[0-9]?|tml)$">
+        Require all denied
+    </FilesMatch>
+</IfModule>

@@ -1,0 +1,94 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark;
+}
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@source "../../app";
+@source "../../public/assets/js";
+
+/* Brand colours / fonts come from each company's theme (inline CSS variables). */
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Cairo", ui-sans-serif, system-ui, sans-serif;
+  --animate-fade-up: fade-up 0.6s cubic-bezier(.2,.7,.2,1) both;
+  --animate-float: float 8s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.2s linear infinite;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20px, -24px) scale(1.06); }
+}
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+@keyframes ping-soft {
+  0% { transform: scale(1); opacity: .7; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+  body { @apply bg-base-200/40 text-base-content antialiased; font-feature-settings: "cv11", "ss01"; }
+  [data-theme=dark] body { @apply bg-base-300/40; }
+  ::selection { background: color-mix(in oklab, var(--color-primary) 30%, transparent); }
+  [x-cloak] { display: none !important; }
+  * { scrollbar-width: thin; scrollbar-color: color-mix(in oklab, var(--color-base-content) 20%, transparent) transparent; }
+}
+
+@layer components {
+  .bg-brand { background-image: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); color: var(--color-primary-content); }
+  .bg-brand-soft {
+    background-image:
+      radial-gradient(60rem 30rem at 0% 0%, color-mix(in oklab, var(--color-primary) 18%, transparent), transparent 60%),
+      radial-gradient(50rem 30rem at 100% 0%, color-mix(in oklab, var(--color-secondary) 16%, transparent), transparent 60%),
+      radial-gradient(40rem 30rem at 50% 100%, color-mix(in oklab, var(--color-accent) 12%, transparent), transparent 60%);
+  }
+  .text-brand {
+    background-image: linear-gradient(120deg, var(--color-primary), var(--color-secondary) 60%, var(--color-accent));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .glass {
+    background: color-mix(in oklab, var(--color-base-100) 72%, transparent);
+    backdrop-filter: blur(18px) saturate(1.5);
+    -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  }
+  .surface { @apply bg-base-100 rounded-box border border-base-content/5 shadow-sm; }
+  .card-lift { @apply transition duration-300 ease-out; }
+  .card-lift:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -18px color-mix(in oklab, var(--color-primary) 45%, transparent); }
+  .blob { @apply absolute rounded-full pointer-events-none blur-3xl opacity-40 animate-float; }
+  .placeholder-img {
+    background-image:
+      radial-gradient(circle at 30% 20%, color-mix(in oklab, var(--color-primary) 35%, transparent), transparent 55%),
+      radial-gradient(circle at 80% 80%, color-mix(in oklab, var(--color-secondary) 30%, transparent), transparent 55%),
+      linear-gradient(135deg, color-mix(in oklab, var(--color-base-200) 90%, var(--color-primary)), var(--color-base-200));
+  }
+  .skeleton-line {
+    background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--color-base-content) 8%, transparent), transparent);
+    background-size: 200% 100%; @apply animate-shimmer;
+  }
+  .kpi-icon { @apply grid place-items-center size-12 rounded-2xl shrink-0; }
+  .nav-pill.active, .menu .active-link { @apply bg-primary/10 text-primary font-semibold; }
+  .live-dot { @apply relative inline-flex size-2.5 rounded-full bg-success; }
+  .live-dot::after { content: ""; @apply absolute inset-0 rounded-full bg-success; animation: ping-soft 1.6s ease-out infinite; }
+  .section-title { @apply text-2xl md:text-3xl font-extrabold tracking-tight; }
+  .label-text { @apply text-sm font-medium opacity-80; }
+  .field { @apply flex flex-col gap-1.5; }
+  .table-modern thead th { @apply text-xs uppercase tracking-wider opacity-60 font-semibold bg-base-200/60; }
+  .table-modern tbody tr { @apply transition-colors; }
+  .table-modern tbody tr:hover { @apply bg-base-200/50; }
+  .leaflet-container { @apply rounded-box; font: inherit; z-index: 0; }
+}
+
+[dir=rtl] .flip-rtl { transform: scaleX(-1); }
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: white !important; }
+}

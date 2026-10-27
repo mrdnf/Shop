@@ -1,0 +1,16 @@
+# Quick start:  docker compose up -d   then open http://localhost:8080/install
+# In the installer use host "db", user "root", password "matjar".
+services:
+  app:
+    build: { context: ., dockerfile: docker/Dockerfile }
+    ports: ["8080:80"]
+    volumes:
+      - config:/var/www/html/config
+      - uploads:/var/www/html/public/uploads
+    depends_on: [db]
+  db:
+    image: mariadb:11.4
+    environment:
+      MARIADB_ROOT_PASSWORD: matjar
+    volumes: [db:/var/lib/mysql]
+volumes: { config: {}, uploads: {}, db: {} }
