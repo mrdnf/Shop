@@ -32,7 +32,7 @@ DB_PASS="${DB_PASS:-}"                         # generated when empty
 MASTER_DB="${MASTER_DB:-master}"               # master (platform) database
 SHOP_DB_PREFIX="${SHOP_DB_PREFIX:-}"          # empty = each shop DB is named exactly like the shop
 MYSQL_ROOT_USER="${MYSQL_ROOT_USER:-root}"     # admin account used once to create DB_USER
-MYSQL_ROOT_PASS="${MYSQL_ROOT_PASS:-}"         # empty = unix-socket auth (sudo mysql)
+MYSQL_ROOT_PASS="${MYSQL_ROOT_PASS:-}"         # empty = auto-detect, else prompt
 COMPANY="${COMPANY:-SysEagles Shop}"
 COMPANY_AR="${COMPANY_AR:-متجر سيس إيجلز}"
 ADMIN_NAME="${ADMIN_NAME:-Administrator}"
@@ -85,10 +85,35 @@ fi
 
 # ----------------------------------------------------------------------------- 2. one DB user
 log "Creating MySQL user '${DB_USER}'"
-ROOT_ARGS=(-u "$MYSQL_ROOT_USER" -h "$DB_HOST" -P "$DB_PORT")
-[ "$DB_HOST" = "127.0.0.1" ] && [ -z "$MYSQL_ROOT_PASS" ] && ROOT_ARGS=(-u "$MYSQL_ROOT_USER")   # socket auth
-[ -n "$MYSQL_ROOT_PASS" ] && export MYSQL_PWD="$MYSQL_ROOT_PASS"
-mysql "${ROOT_ARGS[@]}" -e "SELECT 1" >/dev/null || die "Cannot connect to MySQL as ${MYSQL_ROOT_USER}. Set MYSQL_ROOT_PASS."
+# Find a MySQL admin login (used once, only to create the app user). Tried in order:
+#   MYSQL_ROOT_PASS -> socket auth -> /root/.my.cnf -> /etc/mysql/debian.cnf
+#   -> CyberPanel / Plesk stored credentials -> interactive password prompt.
+ROOT_ARGS=()
+try_admin() { mysql "$@" -e "SELECT 1" >/dev/null 2>&1 && ROOT_ARGS=("$@"); }
+NET=(); { [ "$DB_HOST" = "127.0.0.1" ] || [ "$DB_HOST" = "localhost" ]; } || NET=(-h "$DB_HOST" -P "$DB_PORT")
+if [ -n "$MYSQL_ROOT_PASS" ]; then
+    export MYSQL_PWD="$MYSQL_ROOT_PASS"; try_admin -u "$MYSQL_ROOT_USER" "${NET[@]}" || unset MYSQL_PWD
+fi
+[ ${#ROOT_ARGS[@]} -eq 0 ] && try_admin -u "$MYSQL_ROOT_USER" "${NET[@]}" || true
+[ ${#ROOT_ARGS[@]} -eq 0 ] && [ -r /root/.my.cnf ] && try_admin --defaults-file=/root/.my.cnf || true
+[ ${#ROOT_ARGS[@]} -eq 0 ] && [ -r /etc/mysql/debian.cnf ] && try_admin --defaults-file=/etc/mysql/debian.cnf || true
+if [ ${#ROOT_ARGS[@]} -eq 0 ] && [ -r /etc/cyberpanel/mysqlPassword ]; then
+    CP_PASS="$(php -r '$j=json_decode(file_get_contents("/etc/cyberpanel/mysqlPassword"),true); echo is_array($j)?($j["mysqlpassword"]??""):trim(file_get_contents("/etc/cyberpanel/mysqlPassword"));' 2>/dev/null || true)"
+    [ -n "$CP_PASS" ] && { export MYSQL_PWD="$CP_PASS"; try_admin -u root || unset MYSQL_PWD; }
+fi
+if [ ${#ROOT_ARGS[@]} -eq 0 ] && [ -r /etc/psa/.psa.shadow ]; then
+    export MYSQL_PWD="$(cat /etc/psa/.psa.shadow)"; try_admin -u admin || unset MYSQL_PWD
+fi
+if [ ${#ROOT_ARGS[@]} -eq 0 ] && [ -t 0 ]; then
+    for attempt in 1 2 3; do
+        read -rsp "MySQL password for '${MYSQL_ROOT_USER}' (used once, not saved): " MYSQL_ROOT_PASS; echo
+        export MYSQL_PWD="$MYSQL_ROOT_PASS"
+        try_admin -u "$MYSQL_ROOT_USER" "${NET[@]}" && break
+        warn "Wrong password, try again."
+    done
+fi
+[ ${#ROOT_ARGS[@]} -gt 0 ] || die "Cannot log in to MySQL as an admin. Re-run with MYSQL_ROOT_USER=<admin> MYSQL_ROOT_PASS='<password>'."
+echo "MySQL admin login OK"
 
 if [ -f "$APP_DIR/config/config.php" ]; then
     INSTALLED=1
