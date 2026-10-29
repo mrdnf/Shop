@@ -3,7 +3,7 @@ import argparse, hashlib, json, re
 
 def patch(site,base):
     base=Path(base); changed=[]
-    if site['domain'] in ['pos.syseagles.com','migrate.syseagles.com']:
+    if site['domain'] in ['pos.syseagles.com','migrate.syseagles.com','invoicing.syseagles.com']:
         path=base/'index.php';text=path.read_text(encoding='utf-8-sig')
         if '$seoRequestPath' not in text:
             guard=r'''
