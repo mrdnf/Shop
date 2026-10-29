@@ -32,16 +32,18 @@ if (!in_array($seoRelativePath, ['/', '/index.php', $seoBasePath], true)) {
         if '</head>' not in text:raise RuntimeError(f'No head closing tag: {path}')
         text=text.replace('</head>','<!-- syseagles-public-discovery -->\n'+hook+'\n</head>',1)
         path.write_text(text,encoding='utf-8',newline='\n');changed.append(relative)
-    if site['domain']=='coding.syseagles.com':
+    if site['domain']=='coding.syseagles.com' or site.get('preserve_seo'):
         for route,page in site['pages'].items():
-            if route=='/about/':continue
-            relative='index.html' if route=='/' else route.lstrip('/')
+            if route=='/about/' and not site.get('preserve_seo'):continue
+            relative='index.html' if route=='/' else route.lstrip('/')+('index.html' if route.endswith('/') else '')
             path=base/relative
             if not path.exists():continue
             text=path.read_text(encoding='utf-8-sig')
-            if '<!-- syseagles-public-discovery -->' in text:continue
             head=(base/'deploy/discovery/public/head'/(hashlib.sha256(route.encode()).hexdigest()+'.html')).read_text(encoding='utf-8')
-            text=text.replace('</head>','<!-- syseagles-public-discovery -->\n'+head+'\n</head>',1)
+            block='<!-- syseagles-public-discovery -->\n'+head+'\n</head>'
+            updated=re.sub(r'<!-- syseagles-public-discovery -->.*?</head>',lambda match:block,text,count=1,flags=re.S) if '<!-- syseagles-public-discovery -->' in text else text.replace('</head>',block,1)
+            if updated==text:continue
+            text=updated
             path.write_text(text,encoding='utf-8',newline='\n');changed.append(relative)
     if site['domain']=='quiz.syseagles.com':
         for relative in ['client/index.html','client/dist/index.html']:
