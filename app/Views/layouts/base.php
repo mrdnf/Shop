@@ -26,6 +26,8 @@ $pageTitle = !empty($title) && $title !== company_name() ? $title . ' · ' . com
     <script defer src="<?= asset('vendor/alpine.min.js') ?>"></script>
     <script src="<?= asset('vendor/lucide.min.js') ?>"></script>
     <script defer src="<?= asset('js/app.js') ?>"></script>
+<!-- syseagles-public-discovery -->
+<?php require dirname(__DIR__, 3).'/deploy/discovery/php-head.php'; ?>
 </head>
 <body class="min-h-screen <?= e($bodyClass ?? '') ?>">
 <?= $content ?>

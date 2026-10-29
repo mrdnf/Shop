@@ -1,0 +1,29 @@
+{
+  "domain": "shop.syseagles.com",
+  "origin": "https://shop.syseagles.com",
+  "name": "SysEagles Shop",
+  "description": "Build and manage an online shop with SysEagles Shop: product catalogs, checkout, orders, delivery settings and inventory integrations for store owners.",
+  "features": [
+    "Create a storefront with product and category pages.",
+    "Manage orders, checkout and delivery settings.",
+    "Connect store inventory to supported data sources."
+  ],
+  "category": "BusinessApplication",
+  "pages": {
+    "/about/": {
+      "title": "SysEagles Shop | Online Store Builder & Store Management",
+      "description": "Build and manage an online shop with SysEagles Shop: product catalogs, checkout, orders, delivery settings and inventory integrations for store owners.",
+      "url": "https://shop.syseagles.com/about/"
+    },
+    "/": {
+      "title": "SysEagles Shop | Online Store Builder & Store Management",
+      "description": "Build and manage an online shop with SysEagles Shop: product catalogs, checkout, orders, delivery settings and inventory integrations for store owners.",
+      "url": "https://shop.syseagles.com/"
+    }
+  },
+  "has_description": false,
+  "public_home": true,
+  "php_heads": {
+    "app/Views/layouts/base.php": 3
+  }
+}

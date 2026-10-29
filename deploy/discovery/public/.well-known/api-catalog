@@ -1,0 +1,19 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://shop.syseagles.com/.well-known/site-info.json",
+      "service-desc": [
+        {
+          "href": "https://shop.syseagles.com/openapi.json",
+          "type": "application/vnd.oai.openapi+json"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://shop.syseagles.com/agent-guide.md",
+          "type": "text/markdown"
+        }
+      ]
+    }
+  ]
+}

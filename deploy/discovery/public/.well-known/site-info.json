@@ -1,0 +1,28 @@
+{
+  "name": "SysEagles Shop",
+  "url": "https://shop.syseagles.com/about/",
+  "description": "Build and manage an online shop with SysEagles Shop: product catalogs, checkout, orders, delivery settings and inventory integrations for store owners.",
+  "features": [
+    "Create a storefront with product and category pages.",
+    "Manage orders, checkout and delivery settings.",
+    "Connect store inventory to supported data sources."
+  ],
+  "sign_in_url": "https://shop.syseagles.com/platform/login",
+  "access": {
+    "public": [
+      "Product information",
+      "Published discovery documents"
+    ],
+    "private": [
+      "User accounts",
+      "Application records",
+      "Uploads",
+      "Administrative actions"
+    ],
+    "automated_account_access": "Not offered by this public discovery API."
+  },
+  "publisher": {
+    "name": "SysEagles",
+    "url": "https://syseagles.com/"
+  }
+}

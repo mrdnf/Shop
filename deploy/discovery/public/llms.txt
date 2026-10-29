@@ -1,0 +1,14 @@
+# SysEagles Shop
+
+> Build and manage an online shop with SysEagles Shop: product catalogs, checkout, orders, delivery settings and inventory integrations for store owners.
+
+## Public resources
+
+- [Product information](https://shop.syseagles.com/about.md): Product features and access requirements.
+- [Sitemap](https://shop.syseagles.com/sitemap.xml): Curated public URLs only.
+- [Public metadata API](https://shop.syseagles.com/openapi.json): Read-only product information.
+- [Agent guide](https://shop.syseagles.com/agent-guide.md): Public access boundaries.
+
+## Privacy
+
+Signed-in records, uploads, accounts, mailboxes, assessments and business transactions are private. Public discoverability does not authorize account access.

@@ -1,0 +1,53 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SysEagles Shop Public Product Information API",
+    "version": "1.0.0",
+    "description": "Read-only public product metadata. No account data or business operations are exposed."
+  },
+  "servers": [
+    {
+      "url": "https://shop.syseagles.com"
+    }
+  ],
+  "paths": {
+    "/.well-known/site-info.json": {
+      "get": {
+        "operationId": "getPublicProductInformation",
+        "summary": "Read public product information",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Public product description and access boundaries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "features": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "description",
+                    "features"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

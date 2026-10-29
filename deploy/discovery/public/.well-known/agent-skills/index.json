@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "public-product-information",
+      "type": "skill-md",
+      "description": "Read public product information and access requirements for SysEagles Shop without accessing private application data.",
+      "url": "https://shop.syseagles.com/.well-known/agent-skills/public-product-information/SKILL.md",
+      "digest": "sha256:93c209dffb47c073508d7ce3f7d48a8a2edc3e6ac7dba44c83e58478dba3a129"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "name": "SysEagles Shop",
+    "url": "https://shop.syseagles.com"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:shop.syseagles.com:skills:public-product-information",
+      "displayName": "SysEagles Shop public product guide",
+      "description": "Read public product information and access requirements for SysEagles Shop without accessing private application data.",
+      "type": "text/markdown",
+      "url": "https://shop.syseagles.com/.well-known/agent-skills/public-product-information/SKILL.md",
+      "representativeQueries": [
+        "What does SysEagles Shop do?",
+        "How do I access SysEagles Shop?"
+      ]
+    },
+    {
+      "identifier": "urn:air:shop.syseagles.com:api:public-product-information",
+      "displayName": "Read-only product information API",
+      "description": "Retrieve public features and access requirements. No private data or changes.",
+      "type": "application/vnd.oai.openapi+json",
+      "url": "https://shop.syseagles.com/openapi.json",
+      "representativeQueries": [
+        "Where is the public metadata for SysEagles Shop?",
+        "What information is public on shop.syseagles.com?"
+      ]
+    }
+  ]
+}
